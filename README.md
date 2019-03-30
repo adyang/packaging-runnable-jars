@@ -35,3 +35,15 @@ Running BasicAppWithDependency...
 Running SampleDependency...
 ```
 Note that for this method, the dependencies are external to the jar and have to be available on the path stated on the manifest.
+
+### Shell Script With Embedded Runnable Jar
+This is a hack to run java programs without needing to enter the `java -jar ...` command.
+
+Reference: https://coderwall.com/p/ssuaxa/how-to-make-a-jar-file-linux-executable
+
+```bash
+cat jar-header.sh basic-app.jar > run-basic-app
+chmod u+x run-basic-app
+./run-basic-app
+```
+Output should be the same as the ["Basic Runnable Jar With No Dependencies"](#basic-runnable-jar-with-no-dependencies) example.
