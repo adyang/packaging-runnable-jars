@@ -14,3 +14,24 @@ Should output the following:
 ```console
 Running BasicApp...
 ```
+
+### Basic Runnable Jar With Dependencies
+Sample dependency is located at lib/sample-dep.jar and is used by BasicAppWithDependency.java (to print a message to stdout).
+1. Prepare manifest file by pointing the classpath to the dependency and stating main class as entry point:
+    ```
+    Manifest-Version: 1.0
+    Class-Path: lib/sample-dep.jar
+    Main-Class: BasicAppWithDependency
+    ```
+2. Compile app and package into jar using 'm' option to indicate manifest file
+    ```bash
+    javac BasicAppWithDependency.java -cp lib/sample-dep.jar
+    jar cvfm basic-app-with-dep.jar manifest.txt BasicAppWithDependency.class
+    java -jar basic-app-with-dep.jar
+    ```
+Should output the following:
+```console
+Running BasicAppWithDependency...
+Running SampleDependency...
+```
+Note that for this method, the dependencies are external to the jar and have to be available on the path stated on the manifest.
