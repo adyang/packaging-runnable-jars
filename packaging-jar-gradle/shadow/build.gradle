@@ -1,0 +1,6 @@
+plugins {
+    id 'application'
+    id 'com.github.johnrengelman.shadow' version '5.0.0'
+}
+
+mainClassName = 'com.example.shadow.GradleApp'

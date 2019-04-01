@@ -202,3 +202,27 @@ Should output the following:
 ```
 
 References: https://docs.gradle.org/current/userguide/building_java_projects.html#sec:java_packaging
+
+### Shadow Plugin
+1. Examine the `build.gradle` configuration in the `shadow` directory. The Shadow plugin will automatically include all class files from the main sourceSet and also from the runtime dependencies. It integrates with the application plugin such that the `mainClassName` specified will be reflected in the manifest.
+    ```gradle
+    plugins {
+        id 'application'
+        id 'com.github.johnrengelman.shadow' version '5.0.0'
+    }
+
+    mainClassName = 'com.example.shadow.GradleApp'
+    ```
+2. Run the shadowJar task under the `shadow` subproject and perform a test run.
+    ```bash
+    ./gradlew :shadow:shadowJar
+    java -jar shadow/build/libs/shadow-1.0-SNAPSHOT-all.jar
+    ```
+Should output the following:
+```console
+(shadow, GradleApp, Running)
+```
+
+References:
+- https://imperceptiblethoughts.com/shadow/getting-started/#default-java-groovy-tasks
+- https://imperceptiblethoughts.com/shadow/application-plugin/#running-the-shadow-jar
