@@ -1,6 +1,9 @@
 *.class
 *.jar
 !**/lib/*.jar
-
 basic/run-basic-app
+
+.idea/
+*.iml
+target/
 

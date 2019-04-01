@@ -47,3 +47,50 @@ chmod u+x run-basic-app
 ./run-basic-app
 ```
 Output should be the same as the ["Basic Runnable Jar With No Dependencies"](#basic-runnable-jar-with-no-dependencies) example.
+
+---
+
+## Maven
+Examples show how to use various plugins to generate an uberjar.
+Change into `packaging-jar-maven` directory to run examples.
+
+Reference: https://www.baeldung.com/executable-jar-with-maven
+
+### Maven Assembly Plugin
+1. Change into `maven-assembly` directory and examine the POM Plugin configuration. The predefined descriptor `jar-with-dependencies` is used, which will create a jar with all its dependencies included. Also the mainClass to use in the manifest is specified in the configuration.
+    ```xml
+    <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>3.1.1</version>
+        <configuration>
+            <descriptorRefs>
+                <descriptorRef>jar-with-dependencies</descriptorRef>
+            </descriptorRefs>
+            <archive>
+                <manifest>
+                    <mainClass>com.example.assembly.MavenApp</mainClass>
+                </manifest>
+            </archive>
+        </configuration>
+        <executions>
+            <execution>
+                <id>make-assembly</id>
+                <phase>package</phase>
+                <goals>
+                    <goal>single</goal>
+                </goals>
+            </execution>
+        </executions>
+    </plugin>
+    ```
+2. In the module directory, package the jar and perform a test run.
+    ```bash
+    mvn package
+    java -jar target/maven-assembly-1.0-SNAPSHOT-jar-with-dependencies.jar
+    ```
+Should output the following:
+```console
+(maven-assembly, MavenApp, Running)
+```
+
+Reference: http://maven.apache.org/plugins/maven-assembly-plugin/usage.html
