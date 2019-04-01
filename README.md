@@ -52,6 +52,7 @@ Output should be the same as the ["Basic Runnable Jar With No Dependencies"](#ba
 
 ## Maven
 Examples show how to use various plugins to generate an uberjar.
+Main dependency used is [VAVR](http://www.vavr.io/) and is declared in the parent POM. In particular, each example prints an io.vavr.Tuple of (EXAMPLE_NAME, MavenApp, Running) when run.
 Change into `packaging-jar-maven` directory to run examples.
 
 Reference: https://www.baeldung.com/executable-jar-with-maven
@@ -94,3 +95,40 @@ Should output the following:
 ```
 
 Reference: http://maven.apache.org/plugins/maven-assembly-plugin/usage.html
+
+### Maven Shade Plugin
+In addition to creating an uberjar, the Maven Shade plugin is able to rename the packages of dependencies, which is useful when there are unavoidable conflicts in using different versions of dependencies. (This is common in proprietary legacy libraries where they package their dependencies within the library instead of using a dependency management system.)
+1. Change into `maven-shade` directory and examine the POM Plugin configuration. The `ManifestResourceTransformer` is used to specify the mainClass for the manifest. `createDependencyReducedPom` if set to true will create a new "reduced" POM file containing only dependencies that are excluded from the uberjar. Since in this example, we are not excluding any dependencies from the uberjar, this is set to false to remove clutter.  
+    ```xml
+    <plugin>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>3.2.1</version>
+        <configuration>
+            <transformers>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                    <mainClass>com.example.shade.MavenApp</mainClass>
+                </transformer>
+            </transformers>
+            <createDependencyReducedPom>false</createDependencyReducedPom>
+        </configuration>
+        <executions>
+            <execution>
+                <phase>package</phase>
+                <goals>
+                    <goal>shade</goal>
+                </goals>
+            </execution>
+        </executions>
+    </plugin>
+    ```
+2. In the module directory, package the jar and perform a test run.
+    ```bash
+    mvn package
+    java -jar target/maven-shade-1.0-SNAPSHOT.jar
+    ```
+Should output the following:
+```console
+(maven-shade, MavenApp, Running)
+```
+
+Reference: https://maven.apache.org/plugins/maven-shade-plugin/usage.html
