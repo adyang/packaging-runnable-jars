@@ -132,3 +132,35 @@ Should output the following:
 ```
 
 Reference: https://maven.apache.org/plugins/maven-shade-plugin/usage.html
+
+### Spring Boot Maven Plugin
+Usually used in Spring Boot projects but can also be used as a standalone plugin.
+1. Change into `spring-boot-maven` directory and examine the POM Plugin configuration. The `mainClass` for the manifest can be specified directly in the configuration.  
+    ```xml
+    <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <version>2.1.3.RELEASE</version>
+        <configuration>
+            <mainClass>com.example.spring.boot.MavenApp</mainClass>
+        </configuration>
+        <executions>
+            <execution>
+                <goals>
+                    <goal>repackage</goal>
+                </goals>
+            </execution>
+        </executions>
+    </plugin>
+    ```
+2. In the module directory, package the jar and perform a test run.
+    ```bash
+    mvn package
+    java -jar target/spring-boot-maven-1.0-SNAPSHOT.jar
+    ```
+Should output the following:
+```console
+(spring-boot-maven, MavenApp, Running)
+```
+
+Reference: https://docs.spring.io/spring-boot/docs/current/maven-plugin/usage.html

@@ -12,6 +12,7 @@
     <modules>
         <module>maven-assembly</module>
         <module>maven-shade</module>
+        <module>spring-boot-maven</module>
     </modules>
 
     <dependencies>
