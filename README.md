@@ -164,3 +164,41 @@ Should output the following:
 ```
 
 Reference: https://docs.spring.io/spring-boot/docs/current/maven-plugin/usage.html
+
+---
+
+## Gradle
+Examples show how to use various tasks/ plugins to generate an uberjar.
+Main dependency used is [VAVR](http://www.vavr.io/) and is declared in the root build script. In particular, each example prints an io.vavr.Tuple of (EXAMPLE_NAME, GradleApp, Running) when run.
+Change into `packaging-jar-gradle` directory to run examples.
+
+Reference: https://www.baeldung.com/gradle-fat-jar
+
+### Java Plugin Jar Task
+1. Examine the `build.gradle` configuration in the `java-jar-task` directory. The jar file will contain the class files from our main code `sourceSets.main.output` and also all the dependencies on the `runtimeClasspath`. The Main-Class is also specified as a manifest attribute in the configuration.
+    ```gradle
+    task uberJar(type: Jar) {
+        archiveClassifier = 'uber'
+        manifest {
+            attributes 'Main-Class': 'com.example.jar.task.GradleApp'
+        }
+
+        from sourceSets.main.output
+
+        dependsOn configurations.runtimeClasspath
+        from {
+            configurations.runtimeClasspath.findAll { it.name.endsWith('jar') }.collect { zipTree(it) }
+        }
+    }
+    ```
+2. Run the uberJar task under the `java-jar-task` subproject and perform a test run.
+    ```bash
+    ./gradlew :java-jar-task:uberJar
+    java -jar java-jar-task/build/libs/java-jar-task-1.0-SNAPSHOT-uber.jar
+    ```
+Should output the following:
+```console
+(java-jar-task, GradleApp, Running)
+```
+
+References: https://docs.gradle.org/current/userguide/building_java_projects.html#sec:java_packaging

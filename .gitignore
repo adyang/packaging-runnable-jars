@@ -7,3 +7,6 @@ basic/run-basic-app
 *.iml
 target/
 
+.gradle
+build/
+!gradle-wrapper.jar

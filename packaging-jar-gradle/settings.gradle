@@ -1,0 +1,3 @@
+rootProject.name = 'packaging-jar-gradle'
+include 'java-jar-task'
+
